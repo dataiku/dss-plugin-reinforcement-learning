@@ -14,12 +14,18 @@ This plugin comes with 2 recipes and one webapp template:
 
 ## Plugin Information
 Version 0.1.0
+
 Author Dataiku Labs (Thomas Simonini)
+
 Released
+
 Last updated
+
 License : 
-Source Code: [Github]()
-Reporting issues: [Github](https://github.com/dataiku/dataiku-contrib/issues)
+
+Source Code: [Github](https://github.com/dataiku/dss-plugin-reinforcement-learning)
+
+Reporting issues: [Github](https://github.com/dataiku/dss-plugin-reinforcement-learning/issues)
 
 ## How to Use
 ### Recipes
