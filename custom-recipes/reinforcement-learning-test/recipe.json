@@ -1,99 +1,184 @@
 {
-    "meta" : {
-        "label" : "Test",
-        "description" : "Select a saved model and test it",
-        "icon" : "icon-gamepad"
+  "meta": {
+    "label": "Test",
+    "description": "Select a saved model and test it",
+    "icon": "dku-icon-robot"
+  },
+  "kind": "PYTHON",
+  "inputRoles": [
+    {
+      "name": "main_input",
+      "label": "Saved Models",
+      "description": "The folder containing the saved models",
+      "arity": "UNARY",
+      "required": true,
+      "acceptsDataset": false,
+      "acceptsManagedFolder": true
+    }
+  ],
+  "outputRoles": [
+    {
+      "name": "main_output",
+      "label": "Saved Replays",
+      "description": "The folder containing the saved replays",
+      "arity": "UNARY",
+      "required": true,
+      "acceptsDataset": false,
+      "acceptsManagedFolder": true
+    }
+  ],
+  "params": [
+    {
+      "name": "Model Selection",
+      "type": "SEPARATOR"
     },
-    "kind" : "PYTHON",
-    
-
-"inputRoles" : 
-[
     {
-        "name": "main_input",
-        "label": "Saved Models",
-        "description": "The folder containing the saved models",
-        "arity": "UNARY",
-        "required": true,
-        "acceptsDataset": false,
-        "acceptsManagedFolder":true
-    }
-],
-    
-"outputRoles" : 
-[
+      "name": "model_selection_mode",
+      "label": "What to test",
+      "type": "SELECT",
+      "defaultValue": "manual",
+      "selectChoices": [
+        {
+          "value": "manual",
+          "label": "Manual model selection"
+        },
+        {
+          "value": "manifest_single",
+          "label": "One profile from training manifest"
+        },
+        {
+          "value": "manifest_batch_selected",
+          "label": "Multiple selected profiles from manifest"
+        },
+        {
+          "value": "manifest_batch_all",
+          "label": "All profiles from manifest (batch)"
+        }
+      ],
+      "mandatory": true
+    },
     {
-        "name": "main_output",
-        "label": "Saved Replays",
-        "description": "The folder containing the saved replays",
-        "arity": "UNARY",
-        "required": true,
-        "acceptsDataset": false,
-        "acceptsManagedFolder":true
+      "name": "selected_profile_slug",
+      "label": "Profile slug",
+      "type": "STRING",
+      "description": "Profile slug from training_runs_manifest.json",
+      "visibilityCondition": "model.model_selection_mode == 'manifest_single'"
+    },
+    {
+      "name": "selected_profile_slugs_csv",
+      "label": "Profile slugs (comma or newline separated)",
+      "type": "TEXTAREA",
+      "defaultValue": "",
+      "visibilityCondition": "model.model_selection_mode == 'manifest_batch_selected'"
+    },
+    {
+      "name": "Environment",
+      "type": "SEPARATOR",
+      "visibilityCondition": "model.model_selection_mode == 'manual'"
+    },
+    {
+      "name": "environment_library",
+      "label": "Environment library",
+      "type": "SELECT",
+      "selectChoices": [
+        {
+          "value": "env_gym",
+          "label": "OpenAI Gym"
+        }
+      ],
+      "mandatory": true,
+      "visibilityCondition": "model.model_selection_mode == 'manual'"
+    },
+    {
+      "name": "environment_mode",
+      "label": "Environment source",
+      "type": "SELECT",
+      "defaultValue": "builtin",
+      "selectChoices": [
+        {
+          "value": "builtin",
+          "label": "Built-in environment list"
+        },
+        {
+          "value": "custom",
+          "label": "Custom environment ID"
+        }
+      ],
+      "mandatory": true,
+      "visibilityCondition": "model.model_selection_mode == 'manual'"
+    },
+    {
+      "name": "environment",
+      "label": "Environment",
+      "type": "SELECT",
+      "selectChoices": [
+        {
+          "value": "FrozenLake-v1",
+          "label": "FrozenLake v1"
+        },
+        {
+          "value": "Taxi-v3",
+          "label": "Taxi v3"
+        },
+        {
+          "value": "Acrobot-v1",
+          "label": "Acrobot v1"
+        },
+        {
+          "value": "CartPole-v1",
+          "label": "CartPole v1"
+        },
+        {
+          "value": "MountainCar-v0",
+          "label": "Mountain Car v0"
+        }
+      ],
+      "visibilityCondition": "model.model_selection_mode == 'manual' && model.environment_library == 'env_gym' && model.environment_mode == 'builtin'"
+    },
+    {
+      "name": "custom_environment_id",
+      "label": "Custom Environment ID",
+      "type": "STRING",
+      "placeholder": "my_package/MyBusinessEnv-v0",
+      "visibilityCondition": "model.model_selection_mode == 'manual' && model.environment_mode == 'custom'"
+    },
+    {
+      "name": "custom_environment_module",
+      "label": "Module to import (optional)",
+      "type": "STRING",
+      "placeholder": "my_package.envs.register_envs",
+      "description": "Imported before environment creation, useful to register custom environments",
+      "visibilityCondition": "model.model_selection_mode == 'manual' && model.environment_mode == 'custom'"
+    },
+    {
+      "name": "custom_environment_kwargs_json",
+      "label": "Environment kwargs (JSON object, optional)",
+      "type": "TEXTAREA",
+      "defaultValue": "{}",
+      "visibilityCondition": "model.model_selection_mode == 'manual' && model.environment_mode == 'custom'"
+    },
+    {
+      "name": "agents",
+      "label": "Agent",
+      "type": "SEPARATOR",
+      "visibilityCondition": "model.model_selection_mode == 'manual'"
+    },
+    {
+      "name": "agent",
+      "label": "Agent",
+      "type": "SELECT",
+      "selectChoices": [
+        {
+          "value": "q",
+          "label": "Q-learning"
+        },
+        {
+          "value": "dqn",
+          "label": "Deep Q-learning (DQN)"
+        }
+      ],
+      "visibilityCondition": "model.model_selection_mode == 'manual'"
     }
-],
-
-"params": [ 
-        {
-            "name": "Environment",
-            "type": "SEPARATOR"
-        },
-        {
-            "name": "environment_library",
-            "label": "Environment library",
-            "type": "SELECT",
-            "selectChoices": 
-            [
-                { "value": "env_gym", "label": "OpenAI Gym"},
-            ],
-            "mandatory": true
-        },
-            {
-                // OpenAI Gym
-                "name": "environment",
-                "label": "Environment",
-                "type": "SELECT",
-                "selectChoices": 
-                [
-                    { "value": "FrozenLake-v0", "label": "FrozenLake v0"},
-                    { "value": "FrozenLake8x8-v0", "label": "FrozenLake 8x8"},
-                    { "value": "Taxi-v3", "label": "Taxi v3"},
-                    { "value": "Acrobot-v1", "label": "Acrobot v1"},
-                    { "value": "CartPole-v1", "label": "CartPole v1"},
-                    { "value": "MountainCar-v0", "label": "Mountain Car v0"},
-                    { "value": "MountainCarContinuous-v0", "label": "Mountain Car Continuous v0"},
-                    { "value": "Pendulum-v0", "label": "Prendulum v0"},
-                ],
-                "visibilityCondition": "model.environment_library == 'env_gym'"
-            },
-        // Agent
-        {
-            "name": "agents",
-            "label": "Agent",
-            "type": "SEPARATOR"
-        },
-            {
-                "name": "agent",
-                "label": "Agent",
-                "type": "SELECT",
-                "selectChoices": 
-                [
-                    {
-                        "value": "q",
-                        "label": "Q-learning"
-                    },
-                    {
-                        "value": "dqn",
-                        "label": "Deep Q-learning (DQN)"
-                    },
-                ]
-            }
-    
-    ],
-
-   
-    "resourceKeys" : []
-
+  ],
+  "resourceKeys": []
 }
-
-

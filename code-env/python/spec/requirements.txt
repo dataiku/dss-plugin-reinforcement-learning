@@ -1,8 +1,4 @@
-tensorboard==1.14.0
-tensorflow-estimator==1.14.0
-tensorflow==1.14
-gym
-stable-baselines
+gymnasium>=0.29,<1
+stable-baselines3>=2.3,<3
 Flask
 simplejson
-
