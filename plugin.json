@@ -1,15 +1,15 @@
 {
     "id" : "reinforcement-learning",
 
-    "version" : "0.1.0",
+    "version" : "0.2.0",
 
     "meta" : {
         "label" : "Reinforcement Learning",
 
-        "description" : "A plugin to do reinforcement learning on DSS",
-        "author" : "Dataiku (Thomas Simonini)",
+        "description" : "A plugin to do reinforcement learning in Dataiku",
+        "author" : "Dataiku",
 
-        "icon" : "icon-gamepad",
+        "icon" : "dku-icon-robot",
 
         "licenseInfo" : "Apache Software License",
 

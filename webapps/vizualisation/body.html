@@ -1,67 +1,108 @@
-<div class="container-fluid">
-    
-    <div class = "algorithmBanner">
-        <h1 id="algorithmId"> Algorithm on <h1 id="environmentId">Environment</h1></h1>
-        <h2> Training date: <h2 id="timestampId"> </h2> </h2>
-    </div>
-    <br>
-    
-    <div class="container">
-    <div class="row">
-        <!--<div class="col-lg-4">
-           <div align="center" >
-            <video class="img-responsive" controls id="video_pathId">
-                
-                <source src=""type="video/mp4">
-                
-            </video>
-            </div>
-        </div>-->
-            <div class="col-lg-12 center">
-                <div class="col-lg-4">
-                <div>
-                <h2><span class="label label-success" id="averageScoreId">Test</span></h2>
-                    <p>Average Testing Score</p>
-                </div>
-                
-                <div>
-                <h2><span class="label label-info" id="nbTrainingEpisodesId">Test</span></h2>
-                    <p>Number of training timesteps</p>
-                </div>
-                </div>
-                
-                <div class="col-lg-4">
-                
-                <div>
-                <h2><span class="label label-info" id="policyId">Test</span></h2>
-                    <p>Policy</p>
-                </div>
-                
-                <div>
-                <h2><span class="label label-info" id="learningRateId">Test</span></h2>
-                    <p>Learning Rate</p>
-                </div>
-
-                <div>
-                </div>  
-                </div>
-                    
-                    
-                <div class="col-lg-4">
-                <h2><span class="label label-info" id="gammaId">Test</span></h2>
-                    <p>Gamma</p>
-                </div>
-             
-        
-                
-            </div>
-                
-        
-                
-            </div>
-            
+<div class="dashboard">
+    <div class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Reinforcement Learning Monitor</p>
+            <h1><span id="algorithmId">Agent</span> on <span id="environmentId">Environment</span></h1>
+            <p id="timestampId" class="hero-meta">Loading...</p>
         </div>
-       
-   </div>
-        
+        <div class="hero-controls">
+            <label for="runSelect">Run</label>
+            <select id="runSelect" class="run-select"></select>
+            <p id="runCountLabel" class="helper-text"></p>
+            <p id="loadError" class="error-message hidden"></p>
+        </div>
+    </div>
 
+    <div class="metric-grid">
+        <div class="metric-card">
+            <p class="metric-label">Average Score</p>
+            <p class="metric-value" id="averageScoreId">-</p>
+        </div>
+        <div class="metric-card">
+            <p class="metric-label">Best Episode</p>
+            <p class="metric-value" id="bestScoreId">-</p>
+        </div>
+        <div class="metric-card">
+            <p class="metric-label">Worst Episode</p>
+            <p class="metric-value" id="worstScoreId">-</p>
+        </div>
+        <div class="metric-card">
+            <p class="metric-label">Std Dev</p>
+            <p class="metric-value" id="stdScoreId">-</p>
+        </div>
+        <div class="metric-card">
+            <p class="metric-label">Episodes</p>
+            <p class="metric-value" id="episodeCountId">-</p>
+        </div>
+        <div class="metric-card">
+            <p class="metric-label">Vs Previous</p>
+            <p class="metric-value" id="deltaScoreId">-</p>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="panel">
+            <div class="panel-head">
+                <h2>Episode Scores</h2>
+                <p id="scoreTrendMeta" class="helper-text"></p>
+            </div>
+            <div id="scoreTrendChart" class="chart"></div>
+        </div>
+        <div class="panel">
+            <div class="panel-head">
+                <h2>Score Distribution</h2>
+                <p class="helper-text">Frequency per score bucket</p>
+            </div>
+            <div id="scoreDistributionChart" class="chart"></div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <h2>Run Comparison</h2>
+            <p class="helper-text">Latest runs in this folder</p>
+        </div>
+        <div class="table-wrap">
+            <table class="run-table">
+                <thead>
+                    <tr>
+                        <th>Run</th>
+                        <th>Agent</th>
+                        <th>Environment</th>
+                        <th>Avg</th>
+                        <th>Best</th>
+                        <th>Episodes</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="comparisonRows"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <h2>Test Recipe Profile Slugs</h2>
+            <p id="manifestMeta" class="helper-text">Loading manifest helper...</p>
+        </div>
+        <p id="manifestError" class="error-message hidden"></p>
+        <div id="manifestProfiles" class="manifest-profile-list"></div>
+        <label for="profileSlugsOutput" class="details-key">Copy/Paste for `selected_profile_slugs_csv`</label>
+        <div class="manifest-copy-row">
+            <textarea id="profileSlugsOutput" class="manifest-output" readonly></textarea>
+            <button id="copyProfileSlugsBtn" type="button" class="copy-btn">Copy</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <h2>Run Details</h2>
+        </div>
+        <div class="details-grid">
+            <div><span class="details-key">Policy</span><span id="policyId" class="details-value">-</span></div>
+            <div><span class="details-key">Learning Rate</span><span id="learningRateId" class="details-value">-</span></div>
+            <div><span class="details-key">Gamma</span><span id="gammaId" class="details-value">-</span></div>
+            <div><span class="details-key">Training Timesteps</span><span id="nbTrainingEpisodesId" class="details-value">-</span></div>
+        </div>
+    </div>
+</div>

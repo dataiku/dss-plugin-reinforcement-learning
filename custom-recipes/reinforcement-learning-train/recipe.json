@@ -1,297 +1,322 @@
 {
-    "meta" : {
-        "label" : "Train",
-        "description" : "Choose the environment, the agent and train it",
-        "icon" : "icon-gamepad"
-    },
-
-    "kind" : "PYTHON",
-    
-"outputRoles" : [
+  "meta": {
+    "label": "Train",
+    "description": "Choose the environment, the agent and train it",
+    "icon": "dku-icon-robot"
+  },
+  "kind": "PYTHON",
+  "outputRoles": [
     {
-        "name": "main_output",
-        "label": "Saved Models",
-        "description": "The folder that will contain the saved models",
-        "arity": "UNARY",
-        "required": true,
-        "acceptsDataset": false,
-        "acceptsManagedFolder":true
+      "name": "main_output",
+      "label": "Saved Models",
+      "description": "The folder that will contain the saved models",
+      "arity": "UNARY",
+      "required": true,
+      "acceptsDataset": false,
+      "acceptsManagedFolder": true
     }
-],
-
-"params": [ 
+  ],
+  "params": [
+    {
+      "name": "Environment",
+      "type": "SEPARATOR"
+    },
+    {
+      "name": "environment_library",
+      "label": "Environment library",
+      "type": "SELECT",
+      "selectChoices": [
         {
-            "name": "Environment",
-            "type": "SEPARATOR"
-        },
-        {
-            "name": "environment_library",
-            "label": "Environment library",
-            "type": "SELECT",
-            "selectChoices": 
-            [
-                { "value": "env_gym", "label": "OpenAI Gym"},
-            ],
-            "mandatory": true
-        },
-            {
-                // OpenAI Gym
-                "name": "environment",
-                "label": "Environment",
-                "type": "SELECT",
-                "selectChoices": 
-                [
-                    { "value": "FrozenLake-v0", "label": "FrozenLake v0"},
-                    { "value": "FrozenLake8x8-v0", "label": "FrozenLake 8x8"},
-                    { "value": "Taxi-v3", "label": "Taxi v3"},
-                    { "value": "Acrobot-v1", "label": "Acrobot v1"},
-                    { "value": "CartPole-v1", "label": "CartPole v1"},
-                    { "value": "MountainCar-v0", "label": "Mountain Car v0"},
-                    { "value": "MountainCarContinuous-v0", "label": "Mountain Car Continuous v0"},
-                    { "value": "Pendulum-v0", "label": "Prendulum v0"},
-                ],
-                "visibilityCondition": "model.environment_library == 'env_gym'"
-            },
-        // Agent
-        {
-            "name": "agents",
-            "label": "Agent",
-            "type": "SEPARATOR"
-        },
-            {
-                "name": "agent",
-                "label": "Agent",
-                "type": "SELECT",
-                "selectChoices": 
-                [
-                    {
-                        "value": "q",
-                        "label": "Q-Learning"
-                    },
-                    {
-                        "value": "dqn",
-                        "label": "Deep Q-learning (DQN)"
-                    },
-                    
-                ]
-            },
-
-        // Policy
-        {
-            "name": "policy",
-            "label": "Policy",
-            "type": "SEPARATOR",
-            "visibilityCondition": "model.agent != 'q'"
-        },
-        {
-            "name": "policy",
-            "label": "Policy",
-            "type": "SELECT",
-            "visibilityCondition": "model.agent != 'q'",
-            "selectChoices": [
-                {
-                    "value": "MlpPolicy",
-                    "label": "MLP Policy"
-                },
-                {
-                    "value": "MlpLstmPolicy",
-                    "label": "MLP LSTM Policy"
-                },
-                {
-                    "value": "MlpLnLstmPolicy",
-                    "label": "MLP layer normalized LSTM Policy"
-                },
-                {
-                    "value": "CnnPolicy",
-                    "label": "CNN Policy"
-                },
-                {
-                    "value": "CnnLstmPolicy",
-                    "label": "CNN LSTM Policy"
-                },
-                {
-                    "value": "CnnLnLstmPolicy",
-                    "label": "CNN layer normalized LSTM Policy"
-                }
-            ]
-        },
-    
-        // Exploration Parameters
-        {
-            "name": "Exploration Parameters",
-            "label": "Exploration Parameters",
-            "type": "SEPARATOR",
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-        {
-            "name": "dqn_exploration_fraction",
-            "label": "Exploration Fraction",
-            "type": "DOUBLE",
-            "defaultValue" : 0.1,
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-        {
-            "name": "dqn_exploration_final_eps",
-            "label": "Exploration Min",
-            "type": "DOUBLE",
-            "defaultValue" : 0.02,
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-    
-        // Replay Methods
-        {
-            "name": "Experience Replay Parameters",
-            "label": "Experience Replay Parameters",
-            "type": "SEPARATOR",
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-        {
-            "name": "dqn_buffer_size",
-            "label": "Buffer Size",
-            "type": "INT",
-            "defaultValue" : 50000,
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-        {
-            "name": "dqn_prioritized_replay",
-            "label": "Prioritized Replay",
-            "type": "BOOLEAN",
-            "defaultValue" : false,
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-        
-        // Deep Q Improvements Parameters
-        {
-            "name": "Deep Q Improvements Parameters",
-            "label": "Deep Q Improvements Parameters",
-            "type": "SEPARATOR",
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-        {
-            
-            "name": "dqn_double_q",
-            "label": "Double DQN",
-            "type": "BOOLEAN",
-            "defaultValue" : true,
-            "visibilityCondition": "model.agent == 'dqn'"
-            
-            
-        },
-        {
-            "name": "dqn_target_network_update_freq",
-            "label": "Target Net update freq",
-            "type": "INT",
-            "defaultValue" : 500,
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-    
-    
-        // Training Parameters
-        {
-            "name": "Training Parameters",
-            "label": "Training Parameters",
-            "type": "SEPARATOR"
-        },
-        {
-            "name": "gamma",
-            "label": "Discount factor",
-            "type": "DOUBLE",
-            "defaultValue" : 0.99
-        },
-        
-        {
-            "name": "learning_rate",
-            "label": "Learning Rate",
-            "type": "DOUBLE",
-            "defaultValue" : 0.0005
-        },
-        {
-            "name": "total_timesteps",
-            "label": "Total training timesteps",
-            "type": "INT",
-            "defaultValue": 25000,
-            "visibilityCondition": "model.agent != 'q'"
-        },
-        {
-            "name": "total_episodes",
-            "label": "Total training episodes",
-            "type": "INT",
-            "defaultValue": 5000,
-            "visibilityCondition": "model.agent == 'q'"
-        },
-        {
-            "name": "q_max_steps",
-            "label": "Max steps per episodes",
-            "type": "INT",
-            "defaultValue": 99,
-            "visibilityCondition": "model.agent == 'q'"
-        },
-        {
-            "name": "dqn_batch_size",
-            "label": "Batch Size",
-            "type": "INT",
-            "defaultValue" : 32,
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-        {
-            "name": "dqn_train_freq",
-            "label": "Train Frequency",
-            "type": "INT",
-            "defaultValue" : 1,
-            "visibilityCondition": "model.agent == 'dqn'"
-        },
-    
-        // Q Exploration parameters
-        {
-            "name": "Exploration Parameters",
-            "label": "Exploration Parameters",
-            "type": "SEPARATOR",
-            "visibilityCondition": "model.agent == 'q'"
-        },
-        {
-            "name": "q_epsilon",
-            "label": "Epsilon",
-            "type": "DOUBLE",
-            "defaultValue" : 1.0,
-            "visibilityCondition": "model.agent == 'q'"
-        },
-        {
-            "name": "q_max_epsilon",
-            "label": "Max Epsilon",
-            "type": "DOUBLE",
-            "defaultValue" : 1.0,
-            "visibilityCondition": "model.agent == 'q'"
-        },
-        {
-            "name": "q_min_epsilon",
-            "label": "Min Epsilon",
-            "type": "DOUBLE",
-            "defaultValue" : 0.05,
-            "visibilityCondition": "model.agent == 'q'"
-        },
-        {
-            "name": "q_decay_rate",
-            "label": "Decay Rate",
-            "type": "DOUBLE",
-            "defaultValue" : 0.005,
-            "visibilityCondition": "model.agent == 'q'"
+          "value": "env_gym",
+          "label": "OpenAI Gym"
         }
-        
-        /* Advanced Parameters
+      ],
+      "mandatory": true
+    },
+    {
+      "name": "environment_mode",
+      "label": "Environment source",
+      "type": "SELECT",
+      "defaultValue": "builtin",
+      "selectChoices": [
         {
-            "name": "Advanced Parameters",
-            "label": "Advanced Parameters",
-            "type": "SEPARATOR"
+          "value": "builtin",
+          "label": "Built-in environment list"
         },
         {
-            "name": "advanced_params",
-            "type": "MAP",
-            "label": "Advanced Parameters",
-            "mandatory": false
-        }*/
-       ],
-
-
-    "resourceKeys" : []
-
+          "value": "custom",
+          "label": "Custom environment ID"
+        }
+      ],
+      "mandatory": true
+    },
+    {
+      "name": "environment",
+      "label": "Environment",
+      "type": "SELECT",
+      "selectChoices": [
+        {
+          "value": "FrozenLake-v1",
+          "label": "FrozenLake v1"
+        },
+        {
+          "value": "Taxi-v3",
+          "label": "Taxi v3"
+        },
+        {
+          "value": "Acrobot-v1",
+          "label": "Acrobot v1"
+        },
+        {
+          "value": "CartPole-v1",
+          "label": "CartPole v1"
+        },
+        {
+          "value": "MountainCar-v0",
+          "label": "Mountain Car v0"
+        }
+      ],
+      "visibilityCondition": "model.environment_library == 'env_gym' && model.environment_mode == 'builtin'"
+    },
+    {
+      "name": "custom_environment_id",
+      "label": "Custom Environment ID",
+      "type": "STRING",
+      "placeholder": "my_package/MyBusinessEnv-v0",
+      "visibilityCondition": "model.environment_mode == 'custom'"
+    },
+    {
+      "name": "custom_environment_module",
+      "label": "Module to import (optional)",
+      "type": "STRING",
+      "placeholder": "my_package.envs.register_envs",
+      "description": "Imported before environment creation, useful to register custom environments",
+      "visibilityCondition": "model.environment_mode == 'custom'"
+    },
+    {
+      "name": "custom_environment_kwargs_json",
+      "label": "Environment kwargs (JSON object, optional)",
+      "type": "TEXTAREA",
+      "defaultValue": "{}",
+      "visibilityCondition": "model.environment_mode == 'custom'"
+    },
+    {
+      "name": "Batch Training",
+      "label": "Batch Training",
+      "type": "SEPARATOR"
+    },
+    {
+      "name": "training_profiles_mode",
+      "label": "Training profiles mode",
+      "type": "SELECT",
+      "defaultValue": "single",
+      "selectChoices": [
+        {
+          "value": "single",
+          "label": "Single profile (default)"
+        },
+        {
+          "value": "multi",
+          "label": "Multiple profiles from JSON"
+        }
+      ]
+    },
+    {
+      "name": "training_profiles_json",
+      "label": "Training profiles JSON array",
+      "type": "TEXTAREA",
+      "defaultValue": "[]",
+      "description": "Each object can override recipe parameters (environment, custom_environment_id, custom_environment_kwargs_json, learning_rate, gamma, total_timesteps, etc.)",
+      "visibilityCondition": "model.training_profiles_mode == 'multi'"
+    },
+    {
+      "name": "agents",
+      "label": "Agent",
+      "type": "SEPARATOR"
+    },
+    {
+      "name": "agent",
+      "label": "Agent",
+      "type": "SELECT",
+      "selectChoices": [
+        {
+          "value": "q",
+          "label": "Q-Learning"
+        },
+        {
+          "value": "dqn",
+          "label": "Deep Q-learning (DQN)"
+        }
+      ]
+    },
+    {
+      "name": "policy",
+      "label": "Policy",
+      "type": "SEPARATOR",
+      "visibilityCondition": "model.agent != 'q'"
+    },
+    {
+      "name": "policy",
+      "label": "Policy",
+      "type": "SELECT",
+      "visibilityCondition": "model.agent != 'q'",
+      "selectChoices": [
+        {
+          "value": "MlpPolicy",
+          "label": "MLP Policy"
+        },
+        {
+          "value": "CnnPolicy",
+          "label": "CNN Policy"
+        }
+      ]
+    },
+    {
+      "name": "Exploration Parameters",
+      "label": "Exploration Parameters",
+      "type": "SEPARATOR",
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "dqn_exploration_fraction",
+      "label": "Exploration Fraction",
+      "type": "DOUBLE",
+      "defaultValue": 0.1,
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "dqn_exploration_final_eps",
+      "label": "Exploration Min",
+      "type": "DOUBLE",
+      "defaultValue": 0.02,
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "Experience Replay Parameters",
+      "label": "Experience Replay Parameters",
+      "type": "SEPARATOR",
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "dqn_buffer_size",
+      "label": "Buffer Size",
+      "type": "INT",
+      "defaultValue": 50000,
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "dqn_prioritized_replay",
+      "label": "Prioritized Replay",
+      "type": "BOOLEAN",
+      "defaultValue": false,
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "Deep Q Improvements Parameters",
+      "label": "Deep Q Improvements Parameters",
+      "type": "SEPARATOR",
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "dqn_double_q",
+      "label": "Double DQN",
+      "type": "BOOLEAN",
+      "defaultValue": true,
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "dqn_target_network_update_freq",
+      "label": "Target Net update freq",
+      "type": "INT",
+      "defaultValue": 500,
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "Training Parameters",
+      "label": "Training Parameters",
+      "type": "SEPARATOR"
+    },
+    {
+      "name": "gamma",
+      "label": "Discount factor",
+      "type": "DOUBLE",
+      "defaultValue": 0.99
+    },
+    {
+      "name": "learning_rate",
+      "label": "Learning Rate",
+      "type": "DOUBLE",
+      "defaultValue": 0.0005
+    },
+    {
+      "name": "total_timesteps",
+      "label": "Total training timesteps",
+      "type": "INT",
+      "defaultValue": 25000,
+      "visibilityCondition": "model.agent != 'q'"
+    },
+    {
+      "name": "total_episodes",
+      "label": "Total training episodes",
+      "type": "INT",
+      "defaultValue": 5000,
+      "visibilityCondition": "model.agent == 'q'"
+    },
+    {
+      "name": "q_max_steps",
+      "label": "Max steps per episodes",
+      "type": "INT",
+      "defaultValue": 99,
+      "visibilityCondition": "model.agent == 'q'"
+    },
+    {
+      "name": "dqn_batch_size",
+      "label": "Batch Size",
+      "type": "INT",
+      "defaultValue": 32,
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "dqn_train_freq",
+      "label": "Train Frequency",
+      "type": "INT",
+      "defaultValue": 1,
+      "visibilityCondition": "model.agent == 'dqn'"
+    },
+    {
+      "name": "Exploration Parameters",
+      "label": "Exploration Parameters",
+      "type": "SEPARATOR",
+      "visibilityCondition": "model.agent == 'q'"
+    },
+    {
+      "name": "q_epsilon",
+      "label": "Epsilon",
+      "type": "DOUBLE",
+      "defaultValue": 1.0,
+      "visibilityCondition": "model.agent == 'q'"
+    },
+    {
+      "name": "q_max_epsilon",
+      "label": "Max Epsilon",
+      "type": "DOUBLE",
+      "defaultValue": 1.0,
+      "visibilityCondition": "model.agent == 'q'"
+    },
+    {
+      "name": "q_min_epsilon",
+      "label": "Min Epsilon",
+      "type": "DOUBLE",
+      "defaultValue": 0.05,
+      "visibilityCondition": "model.agent == 'q'"
+    },
+    {
+      "name": "q_decay_rate",
+      "label": "Decay Rate",
+      "type": "DOUBLE",
+      "defaultValue": 0.005,
+      "visibilityCondition": "model.agent == 'q'"
+    }
+  ],
+  "resourceKeys": []
 }
