@@ -1,20 +1,13 @@
 {
     "id" : "reinforcement-learning",
-
     "version" : "0.2.0",
-
     "meta" : {
         "label" : "Reinforcement Learning",
-
         "description" : "A plugin to do reinforcement learning in Dataiku",
         "author" : "Dataiku",
-
         "icon" : "dku-icon-robot",
-
         "licenseInfo" : "Apache Software License",
-
-        "url" : "https://www.dataiku.com/dss/plugins/info/reinforcement-learning.html",
-
-        "tags" : ["reinforcement-learning"]
+        "url" : "https://doc.dataiku.com/dss/latest/machine-learning/reinforcement-learning.html",
+        "tags" : ["Machine Learning"]
     }
 }
